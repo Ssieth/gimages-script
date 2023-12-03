@@ -11,7 +11,7 @@
 //
 // @require     https://code.jquery.com/jquery-3.7.1.min.js
 //
-// @version     0.2.2
+// @version     0.2.3
 // @grant       GM_getValue
 // @grant       GM_setValue
 // @grant       GM_deleteValue
@@ -20,12 +20,23 @@
 // @grant       GM_setClipboard
 // @grant       GM_xmlhttpRequest
 // @grant       GM_getResourceURL
+// @grant       GM_registerMenuCommand
 // @license     GPL
 // @copyright   2023, Ssieth
 // ==/UserScript==
 
 /*jshint esversion: 6 */
 /* jshint -W083 */
+
+let showSizes = true;
+
+function saveSettings() {
+  GM_setValue("showSizes",showSizes);
+}
+
+function loadSettings() {
+  showSizes = GM_getValue("showSizes", true);
+}
 
 function updateURLs_img2() {
   $imgs = $("img[style^='max-width:']");
@@ -71,33 +82,38 @@ function tick() {
 }
 
   function showDims() {
-    // Find all thumbnails & exclude the "already handled" class we set below
-    const images = document.querySelectorAll('[data-ow]:not(.img-dims):not([data-ismultirow])');
+    if (!showSizes) {
+      $("div.img-dims p").remove();
+      $("div.img-dims").removeClass("img-dims");
+    } else {
+      // Find all thumbnails & exclude the "already handled" class we set below
+      const images = document.querySelectorAll('[data-ow]:not(.img-dims):not([data-ismultirow])');
 
-    // Loop through all thumbnails
-    images.forEach((image) => {
-      try {
-        // Get original width from 'data-ow' attribute
-        const width = image.getAttribute('data-ow');
+      // Loop through all thumbnails
+      images.forEach((image) => {
+        try {
+          // Get original width from 'data-ow' attribute
+          const width = image.getAttribute('data-ow');
 
-        // Get original height from 'data-oh' attribute
-        const height = image.getAttribute('data-oh');
+          // Get original height from 'data-oh' attribute
+          const height = image.getAttribute('data-oh');
 
-        // Create p tag and insert text
-        const dimensionsDiv = document.createElement('p');
-        const dimensionsContent = document.createTextNode(width + ' × ' + height);
-        dimensionsDiv.appendChild(dimensionsContent);
+          // Create p tag and insert text
+          const dimensionsDiv = document.createElement('p');
+          const dimensionsContent = document.createTextNode(width + ' × ' + height);
+          dimensionsDiv.appendChild(dimensionsContent);
 
-        // Append everything to thumbnail
-        image.children[1].appendChild(dimensionsDiv);
+          // Append everything to thumbnail
+          image.children[1].appendChild(dimensionsDiv);
 
-        // Add CSS class to the thumbnail
-        image.classList.add('img-dims');
+          // Add CSS class to the thumbnail
+          image.classList.add('img-dims');
 
-      } catch (error) {
-        console.error(error);
-      }
-    });
+        } catch (error) {
+          console.error(error);
+        }
+      });
+    }
   }
 
   // Initialize new MutationObserver
@@ -112,6 +128,12 @@ function tick() {
   }
 
 $(document).ready( function() {
+  loadSettings();
+  GM_registerMenuCommand("Toggle image sizes",function() {
+    showSizes = !showSizes;
+    saveSettings();
+    showDims();
+  });
      // Add Google's own CSS used for image dimensions
   addGlobalStyle(`
     .img-dims p {

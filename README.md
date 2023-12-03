@@ -7,6 +7,10 @@ It requires a userscript plugin for your browser.  I use TamperMonkey (https://w
 The specific features are listed below:
 
 ## In the last version
+0.2.3:
+
+* Added menu option to toggle image size tags
+
 0.2.2:
 
 * Fixed a bug with multiple tabs being opened when only one should be/
