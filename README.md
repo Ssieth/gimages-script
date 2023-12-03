@@ -7,6 +7,10 @@ It requires a userscript plugin for your browser.  I use TamperMonkey (https://w
 The specific features are listed below:
 
 ## In the last version
+0.2.0:
+
+* Now adds size indicator to each image
+
 0.1.0:
 
 * Clicking images in the right side-bar now takes you straight to the image, not the page on which it is used.
