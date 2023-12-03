@@ -7,6 +7,10 @@ It requires a userscript plugin for your browser.  I use TamperMonkey (https://w
 The specific features are listed below:
 
 ## In the last version
+0.2.2:
+
+* Fixed a bug with multiple tabs being opened when only one should be/
+
 0.2.1:
 
 * Fixed a bug with direct image linking not working in some cases
