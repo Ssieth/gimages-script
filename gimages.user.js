@@ -11,7 +11,7 @@
 //
 // @require     https://code.jquery.com/jquery-3.7.1.min.js
 //
-// @version     0.2.1
+// @version     0.2.2
 // @grant       GM_getValue
 // @grant       GM_setValue
 // @grant       GM_deleteValue
@@ -33,6 +33,7 @@ function updateURLs_img2() {
     $img = $(this);
     let href = $img.attr("src");
     if ($img.attr("ssi-proc") !== 'done') {
+      $img.attr("ssi-proc","done");
       $img.click(function(e) {
         e.preventDefault();
         e.stopPropagation();
